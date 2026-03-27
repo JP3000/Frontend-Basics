@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <style>
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .main-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .todo-input {
+            width: 300px;
+            height: 30px;
+            font-size: 16px;
+            padding: 5px;
+        }
+
+        .todo-list li { 
+            margin: 8px 0;
+        }
+
+        .todo-list button {
+            margin-left: 8px;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="main-wrapper">
+        <h1>My Todo List</h1>
+        <input type="text" class="todo-input" placeholder="What would you like to do?">
+        
+        <ul class="todo-list">
+        </ul>
+    
+    </div>
+
+    <script>
+        // var list = ['Eat', 'Sleep', 'Code'];
+        var list = [{ 
+            name: 'Eat',
+            completed: 0
+        }, {
+            name: 'Sleep',
+            completed: 0
+        }, {
+            name: 'Code',
+            completed: 0
+        }]
+
+        var inputEl = document.querySelector('.todo-input');
+        var listEl = document.querySelector('.todo-list');
+
+        // console.log(inputEl);
+        // console.log(listEl);
+
+        function renderList() {
+            var html = '';
+
+            list.forEach((item) => { 
+                html += `<li>${item.name}
+                     <button class="delete-btn">Delete</button> 
+                     <button class="complete-btn">Complete</button> 
+                    </li>`;
+            });
+            listEl.innerHTML = html;
+        }
+
+        function addTodo() {
+            // 拿到输入框的值
+            var value = inputEl.value.trim();
+            // 判断输入框的值是否为空，如果为空，则不添加，并提示用户输入内容
+            if (!value) {
+                console.log('空内容，不添加.');
+            } else { 
+                // 如果不为空，则添加到list中
+                list.push({name: value, completed: 0});
+                // 清空输入框
+                inputEl.value = '';
+                // 重新渲染列表
+                renderList();
+            }
+        }
+
+        // 监听输入框的回车事件
+        inputEl.addEventListener('keydown', (event) => { 
+            // console.log(event);
+            if (event.key === 'Enter') {
+                addTodo();
+            }
+        });
+
+
+        renderList();
+
+
+
+    </script>
+
+</body>
+</html>
