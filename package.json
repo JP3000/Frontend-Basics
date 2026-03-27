@@ -1,0 +1,16 @@
+{
+  "name": "basic_algorithm",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "node --test",
+    "start": "node src/index.js",
+    "exp": "node experiments/playground.js",
+    "exp:watch": "node --watch experiments/playground.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs"
+}
