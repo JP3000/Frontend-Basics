@@ -32,18 +32,50 @@
         .todo-list button {
             margin-left: 8px;
         }
+
+        .todo-item.completed {
+            text-decoration: line-through;
+            color: #888;
+        }
+
+        .filter-bar {
+            margin-top: 12px;
+        }
+
+        .filter-btn {
+            margin: 0 4px;
+            padding: 4px 8px;
+            border: 1px solid #ccc;
+            background: #fff;
+            cursor: pointer;
+        }
+
+        .filter-btn.active {
+            border-color: #333;
+            font-weight: bold;
+        }
     </style>
 
 </head>
 
 <body>
     <div class="main-wrapper">
+        <!-- 一般都会这么干，但更好的习惯是“样式归 class，行为和数据归 data-*，唯一节点可用 id”。这样代码最稳。 -->
+
         <h1>My Todo List</h1>
         <input type="text" class="todo-input" placeholder="What would you like to do?">
-        
+    
+        <div class="filter-bar">
+            <button class="filter-btn" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="active">Active</button>
+            <button class="filter-btn" data-filter="completed">Completed</button>
+        </div>
+
         <ul class="todo-list">
         </ul>
     
+
+
     </div>
 
     <script>
@@ -61,6 +93,10 @@
 
         var inputEl = document.querySelector('.todo-input');
         var listEl = document.querySelector('.todo-list');
+        var filterBarEl = document.querySelector('.filter-bar');
+
+        // 当前过滤条件，默认为全部
+        var currentFilter = 'all'; // 当前过滤条件，默认为全部
 
         // console.log(inputEl);
         // console.log(listEl);
@@ -68,11 +104,18 @@
         function renderList() {
             var html = '';
 
-            list.forEach((item) => { 
-                html += `<li>${item.name}
-                     <button class="delete-btn">Delete</button> 
-                     <button class="complete-btn">Complete</button> 
-                    </li>`;
+            list.forEach((item, index) => { 
+                // 如果当前过滤条件是 active 且任务已完成，则跳过
+                if (currentFilter === 'active' && item.completed) return; 
+                // 如果当前过滤条件是 completed 且任务未完成，则跳过
+                if (currentFilter === 'completed' && !item.completed) return; 
+                // 使用CSS类名来区分完成和未完成的任务
+                html += 
+                `<li class="todo-item ${item.completed ? 'completed' : ''}">
+                    ${item.name}
+                     <button class="delete-btn" data-index="${index}">Delete</button> 
+                     <button class="complete-btn" data-index="${index}">Complete</button> 
+                </li>`;
             });
             listEl.innerHTML = html;
         }
@@ -101,6 +144,50 @@
             }
         });
 
+        // 监听删除按钮的点击事件
+        listEl.addEventListener('click', (event) => {
+            var deleteBtn = event.target.closest('.delete-btn');
+            if (!deleteBtn) return;
+
+            // typeof deleteBtn.dataset.index 是 string，所以需要转换成 number
+            // Number() 是一个全局函数，可以将字符串转换成数字，如果无法转换，则返回 NaN
+            var index = Number(deleteBtn.dataset.index);
+            
+            list.splice(index, 1);
+            renderList();
+        })
+
+        // 监听完成按钮的点击事件
+        listEl.addEventListener('click', (event) => {
+            var completeBtn = event.target.closest('.complete-btn');
+            if (!completeBtn) return;
+
+            // 拿到完成按钮的索引
+            var index = Number(completeBtn.dataset.index);
+            // 将对应索引的任务的 completed 属性取反
+            list[index].completed = !list[index].completed;
+            renderList();
+        });
+
+        filterBarEl.addEventListener('click', (event) => { 
+            var filterBtn = event.target.closest('.filter-btn');
+            if (!filterBtn) return;
+
+            // 更新当前筛选状态：all / active / completed
+            currentFilter = filterBtn.dataset.filter;
+            
+            // 先清除所有按钮高亮
+            document.querySelectorAll('.filter-btn').forEach((btn) => { 
+                btn.classList.remove('active');
+            })
+
+            // 给当前按钮添加高亮
+            filterBtn.classList.add('active');
+
+            // 重新渲染列表
+            renderList();
+
+        })
 
         renderList();
 
