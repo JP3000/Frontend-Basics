@@ -2,7 +2,6 @@
 // 而且因为有了resolve和reject，可以进行异步处理并且得知任务进度
 
 const isPregnant = true;
-
 const promise = new Promise((resolve, reject) => {
     if (isPregnant) {
         resolve("孩子他爹");
@@ -10,13 +9,12 @@ const promise = new Promise((resolve, reject) => {
         reject("老公");
     }
 })
-
 promise
-    .then( name => {
-        console.log(`男人成为了${name}`);
+    .then( res => {
+        console.log(`男人成为了${res}`);
     })
-    .catch( name => {
-        console.error(`男生成为了${name}`);
+    .catch( res => {
+        console.error(`男生成为了${res}`);
     })
     .finally(() => {
         console.log(`男人和女人最终结婚了！`);

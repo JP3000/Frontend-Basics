@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        document.write('<table border="1">');
+        for(var row = 1; row < 10; row++) {
+            document.write('<tr>');
+            for(var col = 1; col <= row; col++) {
+                document.write(`<td>${col} × ${row} = ${col * row}</td>`);
+            }
+            document.write('</tr>');
+        }
+        document.write('</table>');
+
+
+        document.write('<table border="1">');
+        for(var row = 1; row < 10; row++) {
+            document.write('<tr>');
+            for(var blank = 9 - row; blank > 0; blank--) {
+                document.write('<td></td>');
+            }
+            for(var col = 1; col <= row; col++) {
+                document.write(`<td>${col} × ${row} = ${col * row}</td>`);
+            }
+            document.write('</tr>')
+        }
+        document.write('</table>');
+    </script>
+</body>
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <input type="text">
+    <button class="button_1st">一级废话</button>
+    <button class="button_2nd">二级废话</button>
+    <p></p>
+
+    <script>
+        const input = document.querySelector('input');
+              button_1st = document.querySelector('.button_1st');
+              button_2nd = document.querySelector('.button_2nd');
+              p = document.querySelector('p');
+
+        class Bullshit {
+
+            static welcome_tips() {
+                return '温馨提示：您这是在说废话';
+            }
+            static welcome() {
+                p.innerHTML = this.welcome_tips();
+            }
+
+            constructor(text, color) { 
+                this.text = text;
+                this.color = color;
+            }
+            show() {
+                p.innerHTML = this.text + input.value;
+                p.style.color = this.color;
+            }
+        }
+
+        class Son_of_Bullshit extends Bullshit {
+            constructor(text, color, fontSize) {
+                super(text, color);
+                this.fontSize = fontSize;
+            }
+
+            show() {
+                p.innerHTML = this.text + p.innerHTML; 
+                p.style.color = this.color;
+                p.style.fontSize = this.fontSize;   
+            }
+
+            get extra() {
+                return `这些是废话: ${this.text}, ${this.value}`;
+            }
+        }
+
+        button_1st.addEventListener('click', () => {
+            const bullshit = new Bullshit('我知道', '#00a1d6');
+            bullshit.show();
+            bullshite.extra = '儿';
+            console.log(bullshite.extra);
+        })
+
+        button_2nd.addEventListener('click', () => {
+            const son_of_bullshit = new Son_of_Bullshit('我也知道', '#f85b88', '30px');
+            son_of_bullshit.show();
+        });
+        
+        p.addEventListener('click', () => {
+            Bullshit.welcome();
+        });
+    </script>
+
+</body>
+</html>
